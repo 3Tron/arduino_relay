@@ -1,0 +1,1 @@
+com_amapz_relay_rest
