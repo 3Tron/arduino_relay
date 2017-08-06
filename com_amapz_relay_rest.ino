@@ -4,7 +4,7 @@
 #include <SD.h>
 
 /* optional set host name */
-//#define HOST_NAME "arduino.amapz.com"
+//#define HOST_NAME "arduino.example.com"
 
 EthernetClient webClient;
 EthernetServer server(80);
@@ -20,18 +20,17 @@ int states[]= {-1, -1};
 
 void setup() {
   Serial.begin(115200);
-Serial.println("Proto3 - Jean-Philippe@Ruijs.fr");
+  Serial.println("Arduino EtherShield Relay with REST Web interface - Jean-Philippe@Ruijs.fr");
   testRelays();
-
   startServer();
 }
 
 void startServer(){
-  byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x2D};
+  byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x3D};
 
   if (Ethernet.begin(mac) == 0) {
     Serial.print("Static IP: ");
-    IPAddress ip(192,168,0,203);
+    IPAddress ip(192,168,0,77);
     IPAddress gateway(192, 168, 0, 1);
     IPAddress subnet(255, 255, 255, 0);
     Ethernet.begin(mac, ip, gateway, subnet);
@@ -43,7 +42,6 @@ void startServer(){
 }
 
 void loop(){
-  //loopWebClient();
   loopWebServer();
 }
 
@@ -95,7 +93,6 @@ void loopWebServer() {
 
 
 void restRoute(String strGet){
-  //Serial.print("restRoute()::");
   int SLASH_RELAY_CHILD = 10;
   strResponse.concat("{\n");
     //route relay
@@ -106,11 +103,9 @@ void restRoute(String strGet){
         }
         if( isChild(strGet,"/toggl", SLASH_RELAY_CHILD) )  {
           toggle(i);
-          //strResponse.concat(getHeader("toggle"));
         }
         if( isChild(strGet,"/low", SLASH_RELAY_CHILD) )     {
           goLow(i);
-          //strResponse.concat(getHeader("low"));
         }
         if( isChild(strGet,"/high", SLASH_RELAY_CHILD) )    {
           getHigh(i);
@@ -183,7 +178,6 @@ String getHeader(String action){
 
 String getPinState(int i, String task){
   String s = "";
-//  s.concat(getNV(task+"_id", String(i)));
   s.concat("\"");
     s.concat(task+String(i));
   s.concat("\"");

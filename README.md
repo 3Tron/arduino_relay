@@ -1,1 +1,1 @@
-com_amapz_relay_rest
+Arduino EtherShield Relay with REST Web interface
